@@ -1,0 +1,31 @@
+{
+    "name": "Yu-Gi-Oh! Draw Probability Tool",
+    "description": "Yu-Gi-Oh! Draw Probability Tool è un'estensione di Google che ti aiuta a calcolare la probabilità di pescare una carta o più copie di una specifica carta nella tua mano iniziale del popolare gioco di carte Yu-Gi-Oh!. Ti sei mai domandato come sapere le probabilità di pescare una carta all'inizio di una partita? Con questa estensione, non c'è bisogno di essere un esperto matematico. Basta inserire il numero di copie di ciascuna carta presente nel tuo mazzo e l'estensione farà il resto, calcolando le probabilità di pescare quella carta specifica. Che tu sia un giocatore occasionale o un veterano del gioco, questa estensione è uno strumento indispensabile per aiutarti a preparare la tua strategia iniziale. Scaricalo ora e inizia a giocare!",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_title": "Yu-Gi-Oh! Draw Probability Tool"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.certy.me/*",
+                "https://www.subito.it/*",
+                "https://areautenti.subito.it/*"
+            ],
+            "js": [
+                "get_script.js"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "info-16.png",
+        "48": "info-48.png",
+        "128": "icon128.png"
+    }
+}
