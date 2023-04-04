@@ -3,3 +3,16 @@
     padding: 0;
     margin: 0;
 }
+
+body {
+    width: 24.375rem;
+    height: 30.9375rem;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 0.4375rem;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
