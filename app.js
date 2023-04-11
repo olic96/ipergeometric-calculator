@@ -6,7 +6,7 @@ function getApplicationTexts() {
         two: "Hai il %s % di probabilità di vedere due copie di questa carta!",
         three: "Hai il %s % di probabilità di vedere tre copie di questa carta!",
         // btns //
-        btnCalculate: "Calcola",
+        btnCalculate: "Calcola probabilità",
         // quest //
         quest1: "Quante carte hai nel tuo deck?",
         quest2: "Quante copie giochi di questa carta?",
@@ -34,34 +34,56 @@ function init() {
     select.querySelector('option[value="primo"]').textContent = applicationTexts.first;
     select.querySelector('option[value="secondo"]').textContent = applicationTexts.second;
 
-    document.querySelector(".calculate").addEventListener("click", calculateProbability);
+    document.querySelector(".calculate").addEventListener("click", calc);
+}
 
+function calc() {
+    let population = document.querySelector(".input1").value;
+    let numSuccessInPopulation = document.querySelector(".input2").value;
+    let sampleSize = null;
+    const select = document.querySelector('select[name="start-order"]');
+    if (select.value === "primo") {
+        sampleSize = 5;
+    } else if (select.value === "secondo") {
+        sampleSize = 6;
+    }
+    let numSuccessInSample = document.querySelector(".input3").value;
+
+    if (population < 40 || population > 60 || isNaN(population)) {
+        alert("Il tuo deck deve avere tra le 40 e 60 carte!");
+        return;
+    }
+    if (numSuccessInPopulation < 1 || numSuccessInPopulation > 3 || isNaN(numSuccessInPopulation)) {
+        alert("Puoi giocare solo da 1 a 3 copie di questa carta!");
+        return;
+    }
+    if (numSuccessInSample < 0 || numSuccessInSample > 3 || isNaN(numSuccessInSample)) {
+        alert("Non puoi avere più copie in mano di quelle che giochi!.");
+        return;
+    }
+
+    function iperGeoProb(population, numSuccessInPopulation, sampleSize, numSuccessInSample) {
+        let prob = (choose(numSuccessInPopulation, numSuccessInSample) * choose(population - numSuccessInPopulation, sampleSize - numSuccessInSample)) / choose(population, sampleSize);
+        return prob;
+    }
+
+    function choose(n, k) {
+        if (k > n) {
+            return 0;
+        }
+        let res = 1;
+        for (let i = 1; i <= k; i++) {
+            res *= (n - i + 1) / i;
+        }
+        return res;
+    }
+    let prob = iperGeoProb(population, numSuccessInPopulation, sampleSize, numSuccessInSample);
+
+    // stampa
+    let message = "La probabilità di avere " + numSuccessInSample + " copia/e in mano è del " + prob.toFixed(4) + ".";
+    let result = document.querySelector(".result").innerHTML = message;
+
+    return result
 }
 
 init();
-
-
-// giusta
-
-function iperGeoProb(population, numSuccessInPopulation, sampleSize, numSuccessInSample) {
-    let prob = (choose(numSuccessInPopulation, numSuccessInSample) * choose(population - numSuccessInPopulation, sampleSize - numSuccessInSample)) / choose(population, sampleSize);
-    return prob;
-}
-
-function choose(n, k) {
-    if (k > n) {
-        return 0;
-    }
-    let res = 1;
-    for (let i = 1; i <= k; i++) {
-        res *= (n - i + 1) / i;
-    }
-    return res;
-}
-
-let population = 40;
-let numSuccessInPopulation = 3;
-let sampleSize = 5;
-let numSuccessInSample = 3;
-let prob = iperGeoProb(population, numSuccessInPopulation, sampleSize, numSuccessInSample);
-console.log(prob)

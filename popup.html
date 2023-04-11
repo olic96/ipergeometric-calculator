@@ -12,31 +12,33 @@
 <body>
     <div class="logo"></div>
     <section class="main">
-        <div class="-spopulationize">
-            <div class="quest1"></div>
-            <input class="input1" type="number" name="spopulationize" min="40" max="60" pattern="[4-5][0-9]|60"
-                required>
-        </div>
-        <div class="number-successes-population">
-            <div class="quest2"></div>
-            <input class="input2" type="number" name="number-successes-population" min="1" max="3" required>
-        </div>
-        <div class="number-successes-sample">
-            <div class="quest3"></div>
-            <input class="input3" type="number" name="number-successes-population" min="1" max="3" required>
-        </div>
-        <div class="size">
-            <div class="quest4"></div>
-            <select class="input4" name="start-order" required>
-                <option value="select">Seleziona</option>
-                <option value="primo">Primo</option>
-                <option value="secondo">Secondo</option>
-            </select>
-        </div>
+        <form>
+            <div class="population-size">
+                <div class="quest1"></div>
+                <input class="input1" type="number" name="population-size" min="40" max="60" required>
+            </div>
+            <div class="num-successes-population">
+                <div class="quest2"></div>
+                <input class="input2" type="number" name="num-successes-population" min="1" max="3" required>
+            </div>
+            <div class="num-successes-sample">
+                <div class="quest3"></div>
+                <input class="input3" type="number" name="num-successes-sample" min="0" max="3" required>
+            </div>
+            <div class="sample-size">
+                <div class="quest4"></div>
+                <select class="input4" name="start-order" required>
+                    <option value="select">Seleziona</option>
+                    <option value="primo">Primo</option>
+                    <option value="secondo">Secondo</option>
+                </select>
+            </div>
+        </form>
         <button type="submit" class="calculate"></button>
         <div class="result"></div>
     </section>
     <script src="app.js"></script>
 </body>
+
 
 </html>
