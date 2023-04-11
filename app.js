@@ -1,13 +1,6 @@
 function getApplicationTexts() {
     const applicationTexts =
-    {   // convalidation //
-        zero: "Hai il %s % di probabilità di non vedere questa carta!",
-        one: "Hai il %s % di probabilità di vedere una copia di questa carta!",
-        two: "Hai il %s % di probabilità di vedere due copie di questa carta!",
-        three: "Hai il %s % di probabilità di vedere tre copie di questa carta!",
-        // btns //
-        btnCalculate: "Calcola probabilità",
-        // quest //
+    {   // quest //
         quest1: "Quante carte hai nel tuo deck?",
         quest2: "Quante copie giochi di questa carta?",
         quest3: "Quante copie di quella carta vorresti in mano?",
@@ -27,7 +20,6 @@ function init() {
     document.querySelector(".quest2").textContent = applicationTexts.quest2;
     document.querySelector(".quest3").textContent = applicationTexts.quest3;
     document.querySelector(".quest4").textContent = applicationTexts.quest4;
-    document.querySelector(".calculate").textContent = applicationTexts.btnCalculate;
 
     const select = document.querySelector('select[name="start-order"]');
     select.querySelector('option[value="select"]').textContent = applicationTexts.select;
@@ -35,8 +27,35 @@ function init() {
     select.querySelector('option[value="secondo"]').textContent = applicationTexts.second;
 
     document.querySelector(".calculate").addEventListener("click", calc);
-}
 
+    // Aggiungi un listener per il reset del form
+    document.querySelector(".reset-btn").addEventListener("click", function () {
+        // Riimposta i valori degli input al loro valore di default
+        document.querySelector(".input1").value = null;
+        document.querySelector(".input2").value = null;
+        document.querySelector(".input3").value = null;
+        document.querySelector('select[name="start-order"]').value = "select";
+
+        // Resetta anche il risultato
+        document.querySelector(".result").textContent = "";
+    });
+
+    // Ripristina i valori salvati nelle variabili
+    chrome.storage.local.get(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize"], function (data) {
+        if (data.population) {
+            document.querySelector(".input1").value = data.population;
+        }
+        if (data.numSuccessInPopulation) {
+            document.querySelector(".input2").value = data.numSuccessInPopulation;
+        }
+        if (data.numSuccessInSample) {
+            document.querySelector(".input3").value = data.numSuccessInSample;
+        }
+        if (data.sampleSize) {
+            select.value = data.sampleSize;
+        }
+    });
+}
 function calc() {
     let population = document.querySelector(".input1").value;
     let numSuccessInPopulation = document.querySelector(".input2").value;
@@ -46,6 +65,8 @@ function calc() {
         sampleSize = 5;
     } else if (select.value === "secondo") {
         sampleSize = 6;
+    } else {
+        sampleSize = 0;
     }
     let numSuccessInSample = document.querySelector(".input3").value;
 
@@ -58,7 +79,11 @@ function calc() {
         return;
     }
     if (numSuccessInSample < 0 || numSuccessInSample > 3 || isNaN(numSuccessInSample)) {
-        alert("Non puoi avere più copie in mano di quelle che giochi!.");
+        alert("Non puoi avere più copie in mano di quelle che giochi!");
+        return;
+    }
+    if (sampleSize == 0) {
+        alert("Devi scegliere come partire!");
         return;
     }
 
@@ -79,11 +104,26 @@ function calc() {
     }
     let prob = iperGeoProb(population, numSuccessInPopulation, sampleSize, numSuccessInSample);
 
+    let copia = null;
+    if (numSuccessInSample == 1) {
+        copia = "copia";
+    } else if (numSuccessInSample == 0 || numSuccessInSample == 2 || numSuccessInSample == 3) {
+        copia = "copie";
+    }
+
+    // Salva i valori delle variabili
+    chrome.storage.local.set({
+        "population": population,
+        "numSuccessInPopulation": numSuccessInPopulation,
+        "numSuccessInSample": numSuccessInSample,
+        "sampleSize": select.value
+    });
+
     // stampa
-    let message = "La probabilità di avere " + numSuccessInSample + " copia/e in mano è del " + prob.toFixed(4) + ".";
+    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4)}.`;
     let result = document.querySelector(".result").innerHTML = message;
 
-    return result
+    return result;
 }
 
 init();
