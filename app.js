@@ -120,7 +120,7 @@ function calc() {
     });
 
     // stampa
-    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4)}%.`;
+    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4)*100}%.`;
     let result = document.querySelector(".result").innerHTML = message;
 
     return result;
