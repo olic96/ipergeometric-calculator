@@ -38,6 +38,11 @@ function init() {
 
         // Resetta anche il risultato
         document.querySelector(".result").textContent = "";
+
+        // Resetta sessione
+        chrome.storage.local.remove(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize"], function () {
+            console.log("Parametri rimossi.");
+        });
     });
 
     // Ripristina i valori salvati nelle variabili
@@ -120,7 +125,7 @@ function calc() {
     });
 
     // stampa
-    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4)*100}%.`;
+    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4) * 100}%.`;
     let result = document.querySelector(".result").innerHTML = message;
 
     return result;
