@@ -40,13 +40,13 @@ function init() {
         document.querySelector(".result").textContent = "";
 
         // Resetta sessione
-        chrome.storage.local.remove(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize"], function () {
+        chrome.storage.local.remove(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize", "result"], function () {
             console.log("Parametri rimossi.");
         });
     });
 
     // Ripristina i valori salvati nelle variabili
-    chrome.storage.local.get(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize"], function (data) {
+    chrome.storage.local.get(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize", "result"], function (data) {
         if (data.population) {
             document.querySelector(".input1").value = data.population;
         }
@@ -58,6 +58,9 @@ function init() {
         }
         if (data.sampleSize) {
             select.value = data.sampleSize;
+        }
+        if (data.result) {
+            document.querySelector(".result").textContent = data.result;
         }
     });
 }
@@ -121,14 +124,12 @@ function calc() {
         "population": population,
         "numSuccessInPopulation": numSuccessInPopulation,
         "numSuccessInSample": numSuccessInSample,
-        "sampleSize": select.value
+        "sampleSize": select.value,
+        "result": `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4) * 100}%.`
+    }, function() {
+        // Aggiorna il risultato solo dopo che è stato salvato
+        document.querySelector(".result").textContent = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4) * 100}%.`;
     });
-
-    // stampa
-    let message = `La probabilità di avere ${numSuccessInSample} ${copia} in mano è del ${prob.toFixed(4) * 100}%.`;
-    let result = document.querySelector(".result").innerHTML = message;
-
-    return result;
 }
 
 init();
