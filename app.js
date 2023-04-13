@@ -13,6 +13,8 @@ function getApplicationTexts() {
     return applicationTexts;
 }
 
+let errorMessage = document.querySelector(".error-msg");
+
 function init() {
     const applicationTexts = getApplicationTexts();
 
@@ -43,6 +45,8 @@ function init() {
         chrome.storage.local.remove(["population", "numSuccessInPopulation", "numSuccessInSample", "sampleSize", "result"], function () {
             console.log("Parametri rimossi.");
         });
+
+        errorMessage.textContent = "";
     });
 
     // Ripristina i valori salvati nelle variabili
@@ -65,6 +69,9 @@ function init() {
     });
 }
 function calc() {
+    errorMessage.textContent = "";
+    document.querySelector(".result").textContent = "";
+
     let population = document.querySelector(".input1").value;
     let numSuccessInPopulation = document.querySelector(".input2").value;
     let sampleSize = null;
@@ -78,20 +85,24 @@ function calc() {
     }
     let numSuccessInSample = document.querySelector(".input3").value;
 
-    if (population < 40 || population > 60 || isNaN(population)) {
-        alert("Il tuo deck deve avere tra le 40 e 60 carte!");
+    if (isNaN(population) && isNaN(numSuccessInPopulation) && isNaN(numSuccessInSample) && sampleSize == 0) {
+        errorMessage.textContent = "Compila i campi!";
         return;
     }
-    if (numSuccessInPopulation < 1 || numSuccessInPopulation > 3 || isNaN(numSuccessInPopulation)) {
-        alert("Puoi giocare solo da 1 a 3 copie di questa carta!");
+    if (population < 40 || population > 60) {
+        errorMessage.textContent = "Il tuo deck deve avere tra le 40 e 60 carte!";
         return;
     }
-    if (numSuccessInSample < 0 || numSuccessInSample > 3 || isNaN(numSuccessInSample)) {
-        alert("Non puoi avere più copie in mano di quelle che giochi!");
+    if (numSuccessInPopulation < 1 || numSuccessInPopulation > 3) {
+        errorMessage.textContent = "Puoi giocare solo da 1 a 3 copie di questa carta!";
+        return;
+    }
+    if (numSuccessInSample < 0 || numSuccessInSample > 3) {
+        errorMessage.textContent = "Non puoi avere più copie in mano di quelle che giochi!";
         return;
     }
     if (sampleSize == 0) {
-        alert("Devi scegliere come partire!");
+        errorMessage.textContent = "Devi scegliere come partire!";
         return;
     }
 
