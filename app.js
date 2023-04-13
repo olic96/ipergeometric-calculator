@@ -144,3 +144,26 @@ function calc() {
 }
 
 init();
+
+
+//  function iter() {
+//     Btot = 1;
+//     for (let i = 0; i < C; i++) {
+//           Btot *= choose(N[i], n[i]);
+//       }
+//   return Btot;
+// }
+
+// function sum(p1, p2) {
+//     var Z = p1;
+//     i = 0;
+//     while(p2[i]!= null) {
+//         Z -= p2[i];
+//         i++;
+// }
+//     return Z;
+// }
+
+// ((iter()*choose(sum(M, N), sum(m, n)))/(choose(M, m)))*100
+
+// M = mazzo; m = mano; C = carte rombocombo max 6; N[C] = carte combo nel mazzo; n(C) = carte combo in mano

@@ -7,12 +7,31 @@
 body {
     width: 24.375rem;
     height: 30.9375rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     margin-bottom: 0.4375rem;
+    background: linear-gradient(to top, rgba(46, 26, 59, 1), rgba(46, 26, 59, 0.7));
+    opacity: 0.8;
 }
 
 .main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url("card.png");
+    background-repeat: repeat;
+    background-size: 20px 20px;
+}
+
+.input1, .input2, .input3, .input4, button{
+    width: 100px;
+    height: 25px;
+    border-radius: 8px;
+    border: 2px solid rgb(255, 222, 58);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+button {
+    width: 150px;
+    margin: 3px;
+    cursor: pointer;
 }
